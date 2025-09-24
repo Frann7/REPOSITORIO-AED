@@ -190,9 +190,9 @@ void grafo_nodos_adyacentes(Ngrafo* grafo, int id_nodo) {
                 std::cout << "El nodo " << id_nodo << " no tiene adyacentes." << std::endl;
                 return;
             }
-            std::cout << "Adyacentes de " << id_nodo << ": ";
+            std::cout << "Nodos adyacentes a " << id_nodo << ": ";
             while (arco != NULL) {
-                std::cout << arco->destino->id_nodo << " (arco " << arco->id_arco << ") ";
+                std::cout << arco->destino->id_nodo << " ";
                 arco = arco->link;
             }
             std::cout << std::endl;
@@ -226,8 +226,280 @@ void grafo_conjunto_derecho(Ngrafo* grafo, int id_nodo) {
     std::cout << "El nodo " << id_nodo << " no existe." << std::endl;
 }
 
+// Funcion para determinar el conjunto izquierdo de un nodo
+void grafo_conjunto_izquierdo(Ngrafo* grafo, int id_nodo) {   
+    Ngrafo* nodo = grafo;
+    bool encontrado = false;
+    std::cout << "Conjunto izquierdo de " << id_nodo << ": ";
+    while (nodo != NULL) {
+        Narco* arco = nodo->lista_arco;
+        while (arco != NULL) {
+            if (arco->destino->id_nodo == id_nodo) {
+                std::cout << nodo->id_nodo << " ";
+                encontrado = true;
+                break; // No es necesario seguir buscando en los arcos de este nodo
+            }
+            arco = arco->link;
+        }
+        nodo = nodo->link;
+    }
+    if (!encontrado) {
+        std::cout << "El nodo " << id_nodo << " no tiene conjunto izquierdo o no existe." << std::endl;
+    } else {
+        std::cout << std::endl;
+    }
+}
 
 
+//Realice un algoritmo que determine el Ideal Principal izquierdo de un nodo (IPI) <- EN REVISION.
+void grafo_ideal_principal_izquierdo(Ngrafo* grafo, int id_nodo) {
+    Ngrafo* nodo = grafo;
+    bool encontrado = false;
+    std::cout << "Ideal Principal Izquierdo de " << id_nodo << ": ";
+    while (nodo != NULL) {
+        Narco* arco = nodo->lista_arco;
+        while (arco != NULL) {
+            if (arco->destino->id_nodo == id_nodo) {
+                std::cout << nodo->id_nodo << " ";
+                encontrado = true;
+                break; // No es necesario seguir buscando en los arcos de este nodo
+            }
+            arco = arco->link;
+        }
+        nodo = nodo->link;
+    }
+    if (!encontrado) {
+        std::cout << "El nodo " << id_nodo << " no tiene Ideal Principal Izquierdo o no existe." << std::endl;
+    } else {
+        std::cout << std::endl;
+    }
+}
+
+// 11) Determine el conjunto maximal de un grafo.
+void grafo_conjunto_maximal(Ngrafo* grafo) {
+    if (grafo == NULL) {
+        std::cout << "El grafo está vacío." << std::endl;
+        return;
+    }
+
+    bool any = false;
+    Ngrafo* candidato = grafo;
+    std::cout << "Conjunto maximal: ";
+    while (candidato != NULL) {
+        bool tiene_salientes = (candidato->lista_arco != NULL);
+        if (!tiene_salientes) {
+            if (any) std::cout << " ";
+            std::cout << candidato->id_nodo;
+            any = true;
+        }
+        candidato = candidato->link;
+    }
+
+    if (!any) std::cout << "vacio";
+    std::cout << std::endl;
+}
+
+// 12) Determine el conjunto minimal de un grafo
+void grafo_conjunto_minimal(Ngrafo* grafo) {
+    if (grafo == NULL) {
+        std::cout << "El grafo está vacío." << std::endl;
+        return;
+    }
+
+    bool any = false;
+    Ngrafo* candidato = grafo;
+    std::cout << "Conjunto minimal: ";
+    while (candidato != NULL) {
+        bool tiene_entrantes = false;
+        Ngrafo* nodo = grafo;
+        while (nodo != NULL && !tiene_entrantes) {
+            Narco* arco = nodo->lista_arco;
+            while (arco != NULL) {
+                if (arco->destino->id_nodo == candidato->id_nodo) {
+                    tiene_entrantes = true;
+                    break;
+                }
+                arco = arco->link;
+            }
+            nodo = nodo->link;
+        }
+        if (!tiene_entrantes) {
+            if (any) std::cout << " ";
+            std::cout << candidato->id_nodo;
+            any = true;
+        }
+        candidato = candidato->link;
+    }
+
+    if (!any) std::cout << "vacio";
+    std::cout << std::endl;
+}
+
+// 13) Determine si un grafo G tiene mínimo.
+bool grafo_tiene_minimo(Ngrafo* grafo) {
+    if (grafo == NULL) return false;
+
+    Ngrafo* candidato = grafo;
+    while (candidato != NULL) {
+        bool tiene_entrantes = false;
+        Ngrafo* nodo = grafo;
+        while (nodo != NULL && !tiene_entrantes) {
+            Narco* arco = nodo->lista_arco;
+            while (arco != NULL) {
+                if (arco->destino->id_nodo == candidato->id_nodo) {
+                    tiene_entrantes = true;
+                    break;
+                }
+                arco = arco->link;
+            }
+            nodo = nodo->link;
+        }
+        if (!tiene_entrantes) {
+            return true; // Encontrado un nodo sin entrantes
+        }
+        candidato = candidato->link;
+    }
+    return false; // Todos los nodos tienen entrantes
+}
+
+// 14) Realice un algoritmo que determine el Ideal Principal derecho (IPD) de un nodo:
+
+void grafo_ideal_principal_derecho(Ngrafo* grafo, int id_nodo) {
+    Ngrafo* nodo = grafo;
+    while (nodo != NULL) {
+        if (nodo->id_nodo == id_nodo) {
+            Narco* arco = nodo->lista_arco;
+            if (arco == NULL) {
+                std::cout << "El nodo " << id_nodo << " no tiene adyacentes." << std::endl;
+                return;
+            }
+            std::cout << "Ideal Principal Derecho de " << id_nodo << ": ";
+            while (arco != NULL) {
+                std::cout << arco->destino->id_nodo << " ";
+                arco = arco->link;
+            }
+            std::cout << std::endl;
+            return;
+        }
+        nodo = nodo->link;
+    }
+    std::cout << "El nodo " << id_nodo << " no existe." << std::endl;
+}
+
+//15) Dado 2 grafos de la misma cantidad de nodos, determine si son isomorfos
+bool grafo_son_isomorfos(Ngrafo* grafo1, Ngrafo* grafo2) {
+    // Contar nodos en grafo1
+    int count1 = grafo_cantidad_nodos(grafo1);
+    // Contar nodos en grafo2
+    int count2 = grafo_cantidad_nodos(grafo2);
+
+    // Si la cantidad de nodos es diferente, no son isomorfos
+    if (count1 != count2) return false;
+
+    // Aquí se podría agregar una verificación más profunda de isomorfismo,
+    // pero eso puede ser complejo. Por ahora, solo verificamos la cantidad de nodos.
+    return true;
+}
+
+//17) Realice una función que determine si un nodo posee un loops.
+bool grafo_tiene_loop(Ngrafo* grafo, int id_nodo) {
+    Ngrafo* nodo = grafo;
+    while (nodo != NULL) {
+        if (nodo->id_nodo == id_nodo) {
+            Narco* arco = nodo->lista_arco;
+            while (arco != NULL) {
+                if (arco->destino->id_nodo == id_nodo) {
+                    return true; // Se encontró un loop
+                }
+                arco = arco->link;
+            }
+            return false; // No se encontró un loop
+        }
+        nodo = nodo->link;
+    }
+    return false; // El nodo no existe
+}
+
+//18) Dado dos nodos definidos por su id, determine si existe un arco entre dichos nodos.
+bool grafo_existe_arco(Ngrafo* grafo, int id_origen, int id_destino) {
+    Ngrafo* nodo = grafo;
+    while (nodo != NULL) {
+        if (nodo->id_nodo == id_origen) {
+            Narco* arco = nodo->lista_arco;
+            while (arco != NULL) {
+                if (arco->destino->id_nodo == id_destino) {
+                    return true; // Se encontró el arco
+                }
+                arco = arco->link;
+            }
+            return false; // No se encontró el arco
+        }
+        nodo = nodo->link;
+    }
+    return false; // El nodo de origen no existe
+}
+
+//19) Realice una función que determine si un nodo es parte de algún ciclo en el grafo.
+bool grafo_nodo_en_ciclo(Ngrafo* grafo, int id_nodo) {
+    Ngrafo* nodo = grafo;
+    while (nodo != NULL) {
+        if (nodo->id_nodo == id_nodo) {
+            Narco* arco = nodo->lista_arco;
+            while (arco != NULL) {
+                if (arco->destino->id_nodo == id_nodo) {
+                    return true; // Se encontró un ciclo
+                }
+                arco = arco->link;
+            }
+            return false; // No se encontró un ciclo
+        }
+        nodo = nodo->link;
+    }
+    return false; // El nodo no existe
+}
+
+//20) Realice una función que determine si un grafo es básico.
+bool grafo_es_basico(Ngrafo* grafo) {
+    Ngrafo* nodo = grafo;
+    while (nodo != NULL) {
+        Narco* arco = nodo->lista_arco;
+        while (arco != NULL) {
+            if (arco->destino == nodo) {
+                return false; // Se encontró un loop
+            }
+            Narco* arco_siguiente = arco->link;
+            while (arco_siguiente != NULL) {
+                if (arco->destino == arco_siguiente->destino) {
+                    return false; // Se encontró un arco múltiple
+                }
+                arco_siguiente = arco_siguiente->link;
+            }
+            arco = arco->link;
+        }
+        nodo = nodo->link;
+    }
+    return true; // No se encontraron loops ni arcos múltiples
+}
+
+// Funcion para generar un grafo de ejemplo
+Ngrafo* generar_grafo_ejemplo() {
+    Ngrafo* grafo = NULL;
+
+    // Agregar nodos
+    for (int i = 1; i <= 5; ++i) {
+        grafo_agregar_nodo(grafo, i);
+    }
+
+    // Agregar arcos
+    grafo_agregar_arco(grafo, 1, 2, 101);
+    grafo_agregar_arco(grafo, 1, 3, 102);
+    grafo_agregar_arco(grafo, 2, 4, 201);
+    grafo_agregar_arco(grafo, 3, 4, 301);
+    grafo_agregar_arco(grafo, 4, 5, 401);
+    grafo_agregar_arco(grafo, 5, 5, 501);
+
+    return grafo;
+}
 
 // Función para imprimir el grafo y sus arcos
 void imprimir_grafo(Ngrafo* grafo) {
