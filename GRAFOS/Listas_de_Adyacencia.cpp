@@ -286,6 +286,11 @@ void grafo_conjunto_maximal(Ngrafo* grafo) {
     Ngrafo* candidato = grafo;
     std::cout << "Conjunto maximal: ";
     while (candidato != NULL) {
+       /* if(candidato->lista_arco != NULL) {
+            if (any) std::cout << " ";
+            std::cout << candidato->id_nodo;
+            any = true;
+        }*/
         bool tiene_salientes = (candidato->lista_arco != NULL);
         if (!tiene_salientes) {
             if (any) std::cout << " ";
@@ -505,13 +510,13 @@ Ngrafo* generar_grafo_ejemplo() {
 void imprimir_grafo(Ngrafo* grafo) {
     Ngrafo* nodo = grafo;
     while (nodo != NULL) {
-        std::cout << "Nodo " << nodo->id_nodo << " -> ";
+        std::cout << "Nodo " << nodo->id_nodo << ":"<< std::endl;
         Narco* arco = nodo->lista_arco;
         if (arco == NULL) {
             std::cout << "No tiene arcos";
         } else {
             while (arco != NULL) {
-                std::cout << "(Arco " << arco->id_arco << " a Nodo " << arco->destino->id_nodo << ") ";
+                std::cout << "(Arco " << arco->id_arco << "  -> " << arco->destino->id_nodo << ") ";
                 arco = arco->link;
             }
         }

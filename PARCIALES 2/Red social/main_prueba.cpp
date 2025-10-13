@@ -18,45 +18,33 @@ int main()
     funcion_C2(grafo, "Amorosa");
 
     return 0;
-
-
 }
 
+// generar grafo de ejemplo con una persona que tenga varias relaciones del mismo tipo amorosa
 Persona* generar_grafo_ejemplo()
 {
-    Persona* grafo = new Persona();
-    grafo->id_persona = 1;
-    grafo->nombre = "Juan";
-    grafo->sexo = "Masculino";
-    grafo->estado_civil = "Soltero";
+    Persona* p1 = new Persona{1, "Alice", "F", "Soltera", NULL, NULL};
+    Persona* p2 = new Persona{2, "Bob", "M", "Soltero", NULL, NULL};
+    Persona* p3 = new Persona{3, "Charlie", "M", "Casado", NULL, NULL};
+    Persona* p4 = new Persona{4, "Diana", "F", "Soltera", NULL, NULL};
 
-    Persona* persona2 = new Persona();
-    persona2->id_persona = 2;
-    persona2->nombre = "Maria";
-    persona2->sexo = "Femenino";
-    persona2->estado_civil = "Soltera";
+    // Relaciones de Alice
+    p1->relaciones = new Relacion{101, "Amorosa", p2, new Relacion{102, "Amorosa", p3, NULL}};
+    
+    // Relaciones de Bob
+    p2->relaciones = new Relacion{201, "Amorosa", p1, new Relacion{202, "Amorosa", p4, NULL}};
+    
+    // Relaciones de Charlie
+    p3->relaciones = new Relacion{301, "Amorosa", p1, NULL};
+    
+    // Relaciones de Diana
+    p4->relaciones = new Relacion{401, "Amorosa", p2, NULL};
 
-    Persona* persona3 = new Persona();
-    persona3->id_persona = 3;
-    persona3->nombre = "Pedro";
-    persona3->sexo = "Masculino";
-    persona3->estado_civil = "Casado";
+    // Enlazar personas
+    p1->link = p2;
+    p2->link = p3;
+    p3->link = p4;
 
-    grafo->link = persona2;
-    persona2->link = persona3;
-
-    Relacion* relacion1 = new Relacion();
-    relacion1->id_arco = 1;
-    relacion1->tipo = "Amorosa";
-    relacion1->destino = persona2;
-
-    Relacion* relacion2 = new Relacion();
-    relacion2->id_arco = 2;
-    relacion2->tipo = "Amistad";
-    relacion2->destino = persona3;
-
-    grafo->relaciones = relacion1;
-    relacion1->link = relacion2;
-
-    return grafo;
+    return p1; // Retorna la cabeza del grafo (Alice)
+  
 }

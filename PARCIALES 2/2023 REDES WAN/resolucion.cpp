@@ -29,7 +29,17 @@ struct enlance
     enlance* link;
 };
 
-void conexiones_entrantes(router* lista_n, string estado);
+void display(enlance* aux_e);
+int funcion_C2(router* lista_n, string estado);
+
+
+void display(enlance* aux_e){
+      if(aux_e->destino != NULL)
+            {
+                cout<<"El enlance "<< aux_e->codigo <<" con estado " <<aux_e->estado << " llega al nodo " << aux_e->destino->codigo;
+                cout<<endl;
+            }
+}
 
 int funcion_C2(router* lista_n, string estado = "Down"){
     
@@ -41,20 +51,14 @@ int funcion_C2(router* lista_n, string estado = "Down"){
         enlance* aux_e = aux->enlances;
         while(aux_e != NULL)
         {
-            if(aux_e->estado==estado)
+            if(aux_e->estado==estado){
                 contador++;
-
-            if(aux_e->destino != NULL)
-            {
-                cout<<"El enlance "<< aux_e->codigo <<" con estado " <<aux_e->estado << " llega al nodo " << aux_e->destino->codigo;
-                cout<<endl;
+                display(aux_e);
             }
             aux_e = aux_e->link;
         }
         aux = aux->link;
     }
 
-    router* aux2 = lista_n;
-    conexiones_entrantes(aux2, estado)
-
+    return contador;
 }

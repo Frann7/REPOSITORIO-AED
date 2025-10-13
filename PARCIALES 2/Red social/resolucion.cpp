@@ -28,31 +28,52 @@ struct Relacion{
 
 };
 
+void display(Persona* p, int contador, string tipo_relacion);
+void funcion_C2(Persona* grafo, string tipo_relacion);
+void eliminar_relaciones_entrantes(Persona* aux, int id);
+void ermitanio(Persona* &grafo, int id);
+
+void display(Persona* p, int contador, string tipo_relacion){
+     if(contador > 1){
+                cout << "La persona " << p->nombre << " tiene " << contador << " relaciones de tipo " << tipo_relacion << " con las personas: ";
+                Relacion* aux_relacion = p->relaciones;
+                while(aux_relacion != NULL)
+                {
+                    if(aux_relacion->tipo == tipo_relacion)
+                    {
+                        cout << aux_relacion->destino->nombre << ", ";
+                    }
+                    aux_relacion = aux_relacion->link;
+                }
+                cout << endl;
+            } else if (contador == 0){
+                cout << "La persona " << p->nombre << " no tiene relaciones de tipo " << tipo_relacion << endl;
+            } else {
+                cout << "La persona " << p->nombre << " tiene una relacion de tipo " << tipo_relacion << endl;
+            }
+        }
+
 void funcion_C2(Persona* grafo, string tipo_relacion = "Amorosa"){
 
     Persona* aux = grafo;
+    int contador = 0;
 
     while(aux != NULL)
     {
         Relacion* aux_relacion = aux->relaciones;
-        Relacion* anterior = NULL;
 
         while(aux_relacion != NULL)
-        {
-            if(aux_relacion->tipo == tipo_relacion && anterior == NULL)
-            {
-                cout << "La persona " << aux->nombre << " tiene relacion de tipo amorosa con: " << endl << aux_relacion->destino->nombre;
-                cout << endl;
-            }
-            if(aux_relacion->tipo == tipo_relacion && anterior != NULL)
-            {                
-                cout << aux_relacion->destino->nombre;
-                cout << endl;
-            }
+        {   
 
-            anterior = aux_relacion;
+            if(aux_relacion->tipo == tipo_relacion)
+            {
+                contador++;
+            }
+           
             aux_relacion = aux_relacion->link;
         }
+        display(aux, contador, tipo_relacion);
+        contador = 0;
         aux = aux->link;
     }
 }
