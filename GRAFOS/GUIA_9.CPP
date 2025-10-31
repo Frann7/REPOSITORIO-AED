@@ -13,6 +13,7 @@ Ngrafo* ejercicio1(){
     grafo_agregar_nodo(grafo, 4);
     grafo_agregar_nodo(grafo, 121);
     grafo_agregar_nodo(grafo, 8);
+    
 
     grafo_agregar_arco(grafo, 87, 4, 81);
     grafo_agregar_arco(grafo, 121, 8, 73);
@@ -20,6 +21,7 @@ Ngrafo* ejercicio1(){
     grafo_agregar_arco(grafo, 121, 87, 85);
     grafo_agregar_arco(grafo, 4, 121, 7);
     grafo_agregar_arco(grafo, 8, 4, 5);
+ 
 
     return grafo;
 }

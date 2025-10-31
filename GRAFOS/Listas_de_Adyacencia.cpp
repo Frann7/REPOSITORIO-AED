@@ -252,6 +252,7 @@ void grafo_conjunto_izquierdo(Ngrafo* grafo, int id_nodo) {
 
 
 //Realice un algoritmo que determine el Ideal Principal izquierdo de un nodo (IPI) <- EN REVISION.
+/*
 void grafo_ideal_principal_izquierdo(Ngrafo* grafo, int id_nodo) {
     Ngrafo* nodo = grafo;
     bool encontrado = false;
@@ -273,7 +274,7 @@ void grafo_ideal_principal_izquierdo(Ngrafo* grafo, int id_nodo) {
     } else {
         std::cout << std::endl;
     }
-}
+} */
 
 // 11) Determine el conjunto maximal de un grafo.
 void grafo_conjunto_maximal(Ngrafo* grafo) {
@@ -282,26 +283,21 @@ void grafo_conjunto_maximal(Ngrafo* grafo) {
         return;
     }
 
-    bool any = false;
+    bool vacio = false;
+
     Ngrafo* candidato = grafo;
     std::cout << "Conjunto maximal: ";
     while (candidato != NULL) {
-       /* if(candidato->lista_arco != NULL) {
-            if (any) std::cout << " ";
-            std::cout << candidato->id_nodo;
-            any = true;
-        }*/
-        bool tiene_salientes = (candidato->lista_arco != NULL);
-        if (!tiene_salientes) {
-            if (any) std::cout << " ";
-            std::cout << candidato->id_nodo;
-            any = true;
+        Narco* aux_a = candidato->lista_arco;
+        if(aux_a == NULL) {
+            std::cout << candidato->id_nodo << " ";
+            vacio=true;
         }
         candidato = candidato->link;
     }
-
-    if (!any) std::cout << "vacio";
     std::cout << std::endl;
+    if(vacio == false)
+    std::cout << "El grafo no tiene conjunto maximal" << std::endl;
 }
 
 // 12) Determine el conjunto minimal de un grafo
@@ -311,7 +307,6 @@ void grafo_conjunto_minimal(Ngrafo* grafo) {
         return;
     }
 
-    bool any = false;
     Ngrafo* candidato = grafo;
     std::cout << "Conjunto minimal: ";
     while (candidato != NULL) {
@@ -329,16 +324,14 @@ void grafo_conjunto_minimal(Ngrafo* grafo) {
             nodo = nodo->link;
         }
         if (!tiene_entrantes) {
-            if (any) std::cout << " ";
-            std::cout << candidato->id_nodo;
-            any = true;
+            std::cout << candidato->id_nodo << " ";
         }
         candidato = candidato->link;
+    
     }
 
-    if (!any) std::cout << "vacio";
-    std::cout << std::endl;
 }
+
 
 // 13) Determine si un grafo G tiene mínimo.
 bool grafo_tiene_minimo(Ngrafo* grafo) {
@@ -495,6 +488,8 @@ Ngrafo* generar_grafo_ejemplo() {
         grafo_agregar_nodo(grafo, i);
     }
 
+    grafo_agregar_nodo(grafo, 77);
+
     // Agregar arcos
     grafo_agregar_arco(grafo, 1, 2, 101);
     grafo_agregar_arco(grafo, 1, 3, 102);
@@ -502,6 +497,7 @@ Ngrafo* generar_grafo_ejemplo() {
     grafo_agregar_arco(grafo, 3, 4, 301);
     grafo_agregar_arco(grafo, 4, 5, 401);
     grafo_agregar_arco(grafo, 5, 5, 501);
+    grafo_agregar_arco(grafo, 4, 77, 601);
 
     return grafo;
 }

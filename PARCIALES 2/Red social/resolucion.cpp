@@ -32,6 +32,7 @@ void display(Persona* p, int contador, string tipo_relacion);
 void funcion_C2(Persona* grafo, string tipo_relacion);
 void eliminar_relaciones_entrantes(Persona* aux, int id);
 void ermitanio(Persona* &grafo, int id);
+void ermitanio_v2(Persona* &lista_n, int id);
 
 void display(Persona* p, int contador, string tipo_relacion){
      if(contador > 1){
@@ -104,6 +105,7 @@ void eliminar_relaciones_entrantes(Persona* aux, int id){
       }
 }
 
+// 1 forma de hacerlo
 void ermitanio(Persona* &grafo, int id){
 
     if(grafo == NULL) return;
@@ -133,4 +135,29 @@ void ermitanio(Persona* &grafo, int id){
     eliminar_relaciones_entrantes(aux, id);
 
 }
+
+void ermitanio_v2(Persona* &lista_n, int id){
+    
+    Persona* aux = lista_n;
+
+    while(aux != NULL)
+    {
+        if(aux->id_persona == id)
+        {
+            Relacion* aux_r = aux->relaciones;
+            while(aux_r != NULL){
+
+                Relacion* siguiente = aux_r->link;
+                delete aux_r;
+                aux_r = siguiente;
+            }
+        }
+        aux = aux->link;
+    }
+
+    Persona* aux_2 = lista_n;
+    eliminar_relaciones_entrantes(aux_2, id);
+
+}
+
 
