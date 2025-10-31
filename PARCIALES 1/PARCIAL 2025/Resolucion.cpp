@@ -15,7 +15,7 @@ struct Cliente {
 
 // Estructura del nodo de la Lista Doblemente Enlazada
 struct NListaDE {
-    Cliente dato;
+    Cliente* datos; // Puntero a los datos del cliente
     NListaDE* ant; // Puntero al anterior
     NListaDE* sig; // Puntero al siguiente
 };
@@ -53,7 +53,7 @@ void eliminarNodo(NListaDE*& lista, NListaDE* nodoAEliminar) {
 
     // 1. Re-enlazar el nodo anterior (si existe)
     if (anterior != NULL) {
-        anterior->sig = siguiente;
+        anterior->sig = siguiente; 
     } else {
         // Si no hay anterior, el nodo a eliminar era la cabeza (lista).
         lista = siguiente;
